@@ -1,3 +1,5 @@
+# 클래스 내에서 클래스 자기 자신을 타이핑해야할 때
+
 from typing import Optional
 
 
