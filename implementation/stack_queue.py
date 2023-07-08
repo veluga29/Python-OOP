@@ -28,6 +28,7 @@ class LinkedList(Generic[T]):
             while tail.pointer:
                 tail = tail.pointer
                 length += 1
+
             return length
 
     def __str__(self) -> str:
@@ -53,7 +54,7 @@ class Stack(Generic[T], LinkedList[T]):
                 tail = tail.pointer
             tail.pointer = Node(item)
 
-    def pop(self) -> T | None:
+    def pop(self) -> T:
         if self.head is None:
             raise ValueError("Stack is empty")
         cur_node: Node[T] = self.head
@@ -69,8 +70,32 @@ class Stack(Generic[T], LinkedList[T]):
             return tail.item  # type: ignore
 
 
+class Queue(Generic[T], LinkedList[T]):
+    def enqueue(self, item: T):
+        if self.head is None:
+            self.head = Node[T](item)
+            return None
+        cur_node = self.head
+        while cur_node.pointer:
+            cur_node = cur_node.pointer
+        cur_node.pointer = Node[T](item)
+
+    def dequeue(self) -> T:
+        if self.head is None:
+            raise ValueError("Queue is empty")
+        cur_node = self.head
+        if cur_node.pointer is None:
+            self.head = None
+        else:
+            self.head = cur_node.pointer
+            cur_node.pointer = None
+
+        return cur_node.item
+
+
 if __name__ == "__main__":
-    stack: Stack = Stack()
+    # stack test
+    stack: Stack = Stack[str]()
 
     stack.push("Welsh Corgi")
     stack.push("Poodle")
@@ -83,3 +108,15 @@ if __name__ == "__main__":
 
     print(stack.length)
     print(stack)
+
+    # queue test
+    queue: Queue = Queue[str]()
+    queue.enqueue("Welsh Corgi")
+    queue.enqueue("Poodle")
+    print(queue)
+
+    print(queue.dequeue())
+    print(queue.dequeue())
+
+    print(queue.length)
+    print(queue)
